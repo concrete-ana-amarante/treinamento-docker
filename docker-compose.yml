@@ -1,15 +1,35 @@
 version: '3.9'
 services:
-  sistema_concrete_java:
-    container_name: sistema_concrete_java
+  sistema_concrete_nginx:
+    container_name: sistema_concrete_nginx_containet
     build: 
-      dockerfile: /Users/ana.paula.m.amarante/Documents/Treinamento Gama DevOps//validadorCPF/Dockerfile
-      context: /Users/ana.paula.m.amarante/Documents/Treinamento Gama DevOps//validadorCPF/.
-    image: concreteanaamarante/validador-cpf-java-local
+      dockerfile: /Users/ana.paula.m.amarante/Documents/Treinamento Gama DevOps/docker/nginx/Dockerfile
+      context: /Users/ana.paula.m.amarante/Documents/Treinamento Gama DevOps/docker/nginx/
+    image: nginx_local
     ports: 
-      - "3001:8080"
-  sistema_concrete_dotnet:
-    container_name: sistema_concrete_dotnet
-    image: concreteanaamarante/validador-cpf-dotnet
-    ports: 
-      - "3002:80"
+      - "3000:80"
+    depends_on: 
+      - sistema_concrete_java1
+      - sistema_concrete_java2
+      - sistema_concrete_java3
+    networks: 
+      - concrete-network
+  sistema_concrete_java1:
+    container_name: sistema_concrete_nginx_1
+    image: concreteanaamarante/validador-cpf-java
+    networks: 
+    - concrete-network
+  sistema_concrete_java2:
+    container_name: sistema_concrete_nginx_2
+    image: concreteanaamarante/validador-cpf-java
+    networks: 
+    - concrete-network
+  sistema_concrete_java3:
+    container_name: sistema_concrete_nginx_3
+    image: concreteanaamarante/validador-cpf-java
+    networks: 
+    - concrete-network
+
+networks: 
+  concrete-network:
+    driver: bridge
